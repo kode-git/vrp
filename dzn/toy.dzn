@@ -1,0 +1,6 @@
+Name = "toy.txt";
+locX = [0,1,2,3];
+locY = [0,1,2,3];
+Demand = [12,8,16];
+NumVehicles = 3;
+Capacity = [8,12,16];

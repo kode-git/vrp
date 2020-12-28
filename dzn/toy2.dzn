@@ -1,0 +1,6 @@
+  Name = "toy2.txt";
+locX = [6,5,9];
+locY = [8,5,2];
+Demand = [2,3];
+NumVehicles = 1;
+Capacity = [35];

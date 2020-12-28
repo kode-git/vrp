@@ -9,6 +9,7 @@ string: Name;
 
 % Vehicles
 int: NumVehicles;
+int: VehicleWeigth = 10000;
 set of int: Vehicles = 1..NumVehicles;
 
 % Customers
@@ -59,6 +60,8 @@ constraint forall(i in Customers, j in StartEndVisits)(
 array[Visits] of var Vehicles: vehicle; % if vehicle[i] = j then the vehicle j visited i
 array[Visits] of var Visits: succ; % if succ[i] = j then j is the successor of i
 array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (redundant) 
+array[Visits] of var Visits: inv; % the inverse routes for each vehicles when the verse of the visited customers is inverted, inv[i] = j is the same of succ[i] = j
+array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for each vehicle i isUsed[i] = 0 if not used or isUsed[i] = 1 if used
 
 % -------- Main Constraints --------
 % Hamiltonian constraint
@@ -91,10 +94,35 @@ constraint forall(j in Vehicles)
 
 % Channelling constraint
 constraint forall(i,j in Visits) (succ[i] = j <-> prec[j] = i);
+
 % -------- Objective Function --------
-var int: obj = sum(v in Visits)(Distance[v, succ[v]]);
+var int: TotalDistance = sum(v in Visits)(Distance[v, succ[v]]); % sum of the distances traveled 
+var int: NumVehiclesUsed = sum(v in Vehicles)(isUsed[v]) * VehicleWeigth; % sum the number of vehicles used multiply vehicle weigth used to balance the optimal solution
+var int: obj = TotalDistance + NumVehiclesUsed; % objective function is equal to the sum between the total distance and number of vehicles used
+
+% Vehicle constraint
+constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
+
+% ------- Symmetry breaking constraints -----------
+
+% Inverse routing building and symmetry constraint
+constraint forall(i in EndVisits)
+              (inv[i] = succ[i]);
+              
+constraint forall(i in StartVisits, j in EndVisits where vehicle[i] = vehicle[j]) 
+                (inv[i] = prec[j]);
+                
+constraint forall(i in Customers where succ[i] <= NumCustomers) 
+              (inv[i] = succ[succ[i]]);
+
+constraint forall(i in Customers, j in EndVisits where succ[i] in EndVisits /\ j in EndVisits /\ vehicle[i] = vehicle[j])
+              (inv[i] = succ[succ[j]]);
+
+constraint lex_lesseq(succ, inv);
+% Vehicle swapping 
 
 % -------- Search --------
 solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ, 85) minimize obj;
-
-output["Objective=\(obj)"];
+% solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) minimize obj;
+% solve satisfy;
+output["obj=\(obj)\n" ++ "succ=\(succ)\n" ++ "vehicle=\(vehicle)\n" ++ "\(prec)\n" ++ "inv=\(inv)"];

@@ -15,7 +15,7 @@
         "dzn/toy1.dzn",
         "dzn/toy2.dzn"
     ],
-    "openTab": 13,
+    "openTab": 0,
     "projectFiles": [
         "dzn/pr01.dzn",
         "dzn/pr02.dzn",
@@ -30,6 +30,7 @@
         "dzn/pr11.dzn",
         "dzn/toy1.dzn",
         "dzn/toy2.dzn",
+        "dzn/toy3.dzn",
         "vrp-m.mzn"
     ],
     "selectedBuiltinConfigId": "org.gecode.gecode",

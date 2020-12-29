@@ -112,28 +112,41 @@ constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 % ------- Symmetry breaking constraints -----------
 
 % Inverse routing building and symmetry constraint
-%constraint forall(i in EndVisits)
+% constraint forall(i in EndVisits)
  %             (inv[i] = succ[i]);
               
-%constraint forall(i in StartVisits, j in EndVisits where vehicle[i] = vehicle[j]) 
+% constraint forall(i in StartVisits, j in EndVisits where vehicle[i] = vehicle[j]) 
 %                (inv[i] = prec[j]);
                 
-%constraint forall(i in Customers where succ[i] <= NumCustomers) 
+% constraint forall(i in Customers where succ[i] <= NumCustomers) 
 %              (inv[i] = succ[succ[i]]);
 
-%constraint forall(i in Customers, j in EndVisits where succ[i] in EndVisits /\ j in EndVisits /\ vehicle[i] = vehicle[j])
+% constraint forall(i in Customers, j in EndVisits where succ[i] in EndVisits /\ j in EndVisits /\ vehicle[i] = vehicle[j])
 %              (inv[i] = succ[succ[j]]);
 
 % constraint lex_lesseq(succ, inv);
 
 % partial inverte routing
-% Vehicle swapping 
+
+% !!! Broke the model ? !!!
+constraint exists(v in Vehicles)(
+              forall(i,j in Customers, s in StartVisits, e in EndVisits where vehicle[i] = vehicle[j] /\ vehicle[j] = v /\
+                      succ[s] = i /\ prec[e] = j)(
+                      inv[s] = j /\ inv[i] = e)
+              /\
+              forall(i in Customers where vehicle[i] = v /\ prec[i] in Customers)(
+                  inv[i] = prec[i]
+              ));
+
+constraint lex_lesseq(succ,inv);
+              
+% Vehicle usage 
 
 constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
 
 
 % -------- Search --------
-% solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ, 85) minimize obj;
-solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) minimize obj;
+solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ, 85) minimize obj;
+% solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) minimize obj; 
 % solve satisfy;
-output["obj=\(obj)\n" ++ "succ=\(succ)\n" ++ "vehicle=\(vehicle)\n" ++ "prec\(prec)\n" ++ "inv=\(inv)" ++ "\nused\(isUsed)"];
+output["obj=\(obj)\n" ++ "succ=\(succ)\n" ++ "vehicle=\(vehicle)\n" ++ "prec\(prec)\n" ++ "inv=" ++ "\nused\(isUsed)"];

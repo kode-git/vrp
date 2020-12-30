@@ -3,6 +3,7 @@
 include "globals.mzn";
 include "gecode.mzn";
 
+
 string: Name; 
 
 % -------- Input Data --------
@@ -60,13 +61,12 @@ constraint forall(i in Customers, j in StartEndVisits)(
 array[Visits] of var Vehicles: vehicle; % if vehicle[i] = j then the vehicle j visited i
 array[Visits] of var Visits: succ; % if succ[i] = j then j is the successor of i
 array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (redundant) 
-array[Visits] of var Visits: inv; % the inverse routes for each vehicles when the verse of the visited customers is inverted, inv[i] = j is the same of succ[i] = j
 array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for each vehicle i isUsed[i] = 0 if not used or isUsed[i] = 1 if used
 
 % -------- Main Constraints --------
 % Hamiltonian constraint
-constraint circuit(succ);
-
+constraint circuit(succ) :: domain;
+constraint circuit(prec) :: domain;
 % Setting the know decisions
 
 % Start visits vehicles
@@ -92,11 +92,6 @@ constraint forall (c in Customers)
 constraint forall(j in Vehicles) 
                     (sum(i in Customers where vehicle[i] = j)(Demand[i]) <= Capacity[j]);
 
-var int: TotalDemands;
-
-constraint TotalDemands = sum(i in Customers)(Demand[i]);
-
-constraint sum(v in Vehicles)(Capacity[v]) >= TotalDemands;
 
 % Channelling constraint
 constraint forall(i,j in Visits) (succ[i] = j <-> prec[j] = i);
@@ -110,43 +105,25 @@ var int: obj = TotalDistance + NumVehiclesUsed; % objective function is equal to
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
 % ------- Symmetry breaking constraints -----------
-
-% Inverse routing building and symmetry constraint
-% constraint forall(i in EndVisits)
- %             (inv[i] = succ[i]);
-              
-% constraint forall(i in StartVisits, j in EndVisits where vehicle[i] = vehicle[j]) 
-%                (inv[i] = prec[j]);
-                
-% constraint forall(i in Customers where succ[i] <= NumCustomers) 
-%              (inv[i] = succ[succ[i]]);
-
-% constraint forall(i in Customers, j in EndVisits where succ[i] in EndVisits /\ j in EndVisits /\ vehicle[i] = vehicle[j])
-%              (inv[i] = succ[succ[j]]);
-
-% constraint lex_lesseq(succ, inv);
-
-% partial inverte routing
-
-% !!! Broke the model ? !!!
-constraint exists(v in Vehicles)(
-              forall(i,j in Customers, s in StartVisits, e in EndVisits where vehicle[i] = vehicle[j] /\ vehicle[j] = v /\
-                      succ[s] = i /\ prec[e] = j)(
-                      inv[s] = j /\ inv[i] = e)
-              /\
-              forall(i in Customers where vehicle[i] = v /\ prec[i] in Customers)(
-                  inv[i] = prec[i]
-              ));
-
-constraint lex_lesseq(succ,inv);
-              
 % Vehicle usage 
 
-constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
+constraint symmetry_breaking_constraint(forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0));
 
 
 % -------- Search --------
-solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ, 85) minimize obj;
-% solve :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) minimize obj; 
-% solve satisfy;
-output["obj=\(obj)\n" ++ "succ=\(succ)\n" ++ "vehicle=\(vehicle)\n" ++ "prec\(prec)\n" ++ "inv=" ++ "\nused\(isUsed)"];
+solve 
+     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
+%      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250)
+%      :: int_default_search(smallest, indomain_random) :: restart_luby(250);
+%      :: int_default_search(dom_w_deg, indomain_min) :: restart_luby(400);
+%      :: int_default_search(dom_w_deg, indomain_random) :: restart_luby(250) 
+%      :: int_default_search(dom_w_deg, indomain_random) minimize obj; 
+%       :: seq_search([ int_search([succ[j] | j in Visits], dom_w_deg, indomain_random, complete) :: relax_and_reconstruct(succ,85),
+%                       int_search(vehicle, first_fail, indomain_split, complete),
+%                       int_search(prec, first_fail, indomain_random, complete) :: relax_and_reconstruct(prec,85)])
+       minimize obj;
+%      satisfy;
+output["obj=\(obj)\n"];
+
+
+

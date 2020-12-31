@@ -1,0 +1,43 @@
+\documentclass[12pt,twoside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{Thesis Title - change here to your report title}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapter \thechapter}
+\fancyfoot[CO,RE]{Author Name}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\usepackage{tikz}
+\usetikzlibrary{fit, positioning}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\bibliographystyle{ieeetr}
+\usepackage{biblatex}
+\addbibresource{references.bib}
+
+
+\begin{document}
+
+%TC:ignore
+\input{titlepage}
+
+
+\tableofcontents
+
+\input{chapter/introduction.tex}
+\input{chapter/modelling}
+\input{chapter/experiments}
+\input{chapter/conclusions}
+
+\printbibliography
+
+
+\end{document}

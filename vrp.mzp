@@ -1,6 +1,6 @@
 {
     "openFiles": [
-        "vrp-m.mzn",
+        "vrp.mzn",
         "dzn/pr01.dzn",
         "dzn/pr02.dzn",
         "dzn/pr03.dzn",
@@ -13,9 +13,10 @@
         "dzn/pr10.dzn",
         "dzn/pr11.dzn",
         "dzn/toy1.dzn",
-        "dzn/toy2.dzn"
+        "dzn/toy2.dzn",
+        "dzn/toy3.dzn"
     ],
-    "openTab": 0,
+    "openTab": 14,
     "projectFiles": [
         "dzn/pr01.dzn",
         "dzn/pr02.dzn",
@@ -31,7 +32,7 @@
         "dzn/toy1.dzn",
         "dzn/toy2.dzn",
         "dzn/toy3.dzn",
-        "vrp-m.mzn"
+        "vrp.mzn"
     ],
     "selectedBuiltinConfigId": "org.gecode.gecode",
     "selectedBuiltinConfigVersion": "6.3.0",

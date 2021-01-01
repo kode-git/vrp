@@ -1,3 +1,16 @@
 \chapter{Introduction}
 \section{Problem Presentation}
+The Vehicle Routing Problem (VRP) is an NP-optimization problem that has been of great interest for decades for both, science and industry. We got an example with Amazon that use it for the management of the deliveries from his orders around the world. The aim of VRP is to find a set of minimum total cost routes for a fleet of capacitated vehicles (CVRP) based at a single depot, to serve a set of customers under the following constraints:
+\begin{enumerate}
+    \item each route must begin and ends at the depot node
+    \item each customer/location is visited exactly once
+    \item the total demand of each routes does not exceed the capacity of vehicle assigned to the route
+\end{enumerate}
+This type of problem is referred to a combination of two sub-problem:
+\begin{enumerate}
+    \item Travelling Salesman Problem (TSP) which define an Hamiltonian routes similar to the combined routes of the Vehicle Routing Problem
+    \item Knapsack Problem which define constraints to manage the capacities of the vehicles in respect of the customers demands of their routes
+\end{enumerate}
+The VRP belongs to the category of NP-hard problems that can be exactly solved only for small instances of the problem. Therefore, many researchers have concentrated on developing heuristics algorithm to solve this problem for hard instances or find a good solutions (not necessary the optimal one). In the following section we will explain the strategy used to solve it using a Constraint Programming approach.
+\newpage
 \section{Formal Problem Definition}

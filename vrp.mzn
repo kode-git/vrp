@@ -66,7 +66,8 @@ array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for e
 % -------- Main Constraints --------
 % Hamiltonian constraint
 constraint circuit(succ) :: domain;
-constraint circuit(prec) :: domain;
+constraint redundant_constraint(circuit(prec) :: domain);
+
 % Setting the know decisions
 
 % Start visits vehicles
@@ -112,8 +113,8 @@ constraint symmetry_breaking_constraint(forall(i,j in 1..NumVehicles where Capac
 
 % -------- Search --------
 solve 
-     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
-%      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250)
+%     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
+      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
 %      :: int_default_search(smallest, indomain_random) :: restart_luby(250);
 %      :: int_default_search(dom_w_deg, indomain_min) :: restart_luby(400);
 %      :: int_default_search(dom_w_deg, indomain_random) :: restart_luby(250) 

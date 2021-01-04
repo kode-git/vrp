@@ -10,7 +10,7 @@ string: Name;
 
 % Vehicles
 int: NumVehicles;
-int: VehicleWeigth = 10000;
+int: VehicleWeigth = 1000;
 set of int: Vehicles = 1..NumVehicles;
 
 % Customers
@@ -94,8 +94,8 @@ constraint forall(j in Vehicles)
                     (sum(i in Customers where vehicle[i] = j)(Demand[i]) <= Capacity[j]);
 
 
-% Channelling constraint
-constraint forall(i,j in Visits) (succ[i] = j <-> prec[j] = i);
+% Precedence construction
+constraint forall(i,j in Visits) (succ[i] = j -> prec[j] = i);
 
 % -------- Objective Function --------
 var int: TotalDistance = sum(v in Visits)(Distance[v, succ[v]]); % sum of the distances traveled 
@@ -106,15 +106,20 @@ var int: obj = TotalDistance + NumVehiclesUsed; % objective function is equal to
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
 % ------- Symmetry breaking constraints -----------
-% Vehicle usage 
+
+% Routes symmetry 
+
+constraint lex_lesseq(succ,prec);
+
+% Vehicle usage symmetry
 
 constraint symmetry_breaking_constraint(forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0));
 
 
 % -------- Search --------
 solve 
-%     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
-      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
+     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
+%      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
 %      :: int_default_search(smallest, indomain_random) :: restart_luby(250);
 %      :: int_default_search(dom_w_deg, indomain_min) :: restart_luby(400);
 %      :: int_default_search(dom_w_deg, indomain_random) :: restart_luby(250) 

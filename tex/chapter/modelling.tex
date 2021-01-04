@@ -1,7 +1,20 @@
 \chapter{Modelling VRP in Constraint Programming}
 \section{Input Data and any Potential Data Processing}
+Let N the number of customers, input data are as follow:
+\begin{enumerate}
+    \item \begin{math}locX_{i}\end{math} for each i in \{1..N+1\} with a float domain defines the coordinate X of a location \begin{math}L_{i}\end{math}, the last one is a reference of the depot coordinate 
+    \item \begin{math}locY_{i}\end{math} for each i in \{1..N+1\} with a float domain defines the coordinate Y of a location, the last one is a reference of the depot coordinate
+    \item a list \begin{math}(de_{1}, ..., de_{N})\end{math} with \begin{math}d_{i}, i \in \{1..N\}\end{math} the demand of the customer i
+    \item V is the number of vehicles available
+    \item a list \begin{math}(c_{1},..., c_{V})\end{math} with \begin{math} c_{i}, i \in \{1..V\}\end{math} the capacity of the vehicle i
+\end{enumerate}
+From this set of input data we can define following processing data, useful to establish constraints in the model:
+\begin{enumerate}
+    \item 
 \section{Decision Variables}
 \section{Problem \& Additional Constraints}
 \subsection{Main Constraints}
 \subsection{Additional Constraints}
 \section{Objective Function}
+
+

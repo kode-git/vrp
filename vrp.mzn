@@ -22,7 +22,7 @@ int: NumVisits = NumCustomers + (2 * NumVehicles);
 set of int: Visits = 1..NumCustomers + (2 * NumVehicles);
 set of int: StartVisits = NumCustomers + 1..NumCustomers + NumVehicles;
 set of int: EndVisits = NumCustomers + NumVehicles + 1..NumCustomers + (2 * NumVehicles);
-set of int: StartEndVisits = NumCustomers + 1..NumCustomers + (2 * NumVehicles);
+
 
 % Depot Location Index
 int: DepotIndex = NumCustomers + 1;
@@ -40,7 +40,6 @@ array[int] of int: Demand;
 % Capacity
 array[Vehicles] of int: Capacity;
 
-
 % -------- Distance Calculations --------
 % Distances with the extension of depot in start visits and end visits nodes
 array[Visits, Visits] of var int: Distance;
@@ -50,23 +49,27 @@ constraint forall(i, j in Customers)(
                   Distance[i,j] = round(sqrt((pow((locX[j] - locX[i]),2)) + (pow((locY[j] - locY[i]),2))) * 1000));
 
 % Distances between starts and ends visits
-constraint forall(i,j in StartEndVisits)(
+constraint forall(i,j in StartVisits union EndVisits)(
                    Distance[i,j] = 0);
-                   
+                                     
 % Distances between customers and starts or ends visits
-constraint forall(i in Customers, j in StartEndVisits)(
+constraint forall(i in Customers, j in StartVisits union EndVisits )(
                      Distance[i,j] = Distance[j,i] /\ Distance[i,j] = round(sqrt((pow((locX[DepotIndex] - locX[i]),2)) + (pow((locY[DepotIndex] - locY[i]),2))) * 1000));
                      
 % -------- Decisions Variables --------
 array[Visits] of var Vehicles: vehicle; % if vehicle[i] = j then the vehicle j visited i
 array[Visits] of var Visits: succ; % if succ[i] = j then j is the successor of i
-array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (redundant) 
+array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (dual) 
 array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for each vehicle i isUsed[i] = 0 if not used or isUsed[i] = 1 if used
 
 % -------- Main Constraints --------
 % Hamiltonian constraint
 constraint circuit(succ) :: domain;
-constraint redundant_constraint(circuit(prec) :: domain);
+
+% Capacity constraint 
+constraint forall(j in Vehicles) 
+                    (sum(i in Customers where vehicle[i] = j)(Demand[i]) <= Capacity[j]);
+
 
 % Setting the know decisions
 
@@ -88,19 +91,9 @@ constraint succ[NumCustomers + (2 * NumVehicles)] = NumCustomers + 1;
 % Mantain consistency in the subpath of a vehicle
 constraint forall (c in Customers)
             (vehicle[succ[c]] = vehicle[c]);
-            
-% Capacity constraint 
-constraint forall(j in Vehicles) 
-                    (sum(i in Customers where vehicle[i] = j)(Demand[i]) <= Capacity[j]);
-
-
-% Precedence construction
-constraint forall(i,j in Visits) (succ[i] = j -> prec[j] = i);
-
-% -------- Objective Function --------
-var int: TotalDistance = sum(v in Visits)(Distance[v, succ[v]]); % sum of the distances traveled 
-var int: NumVehiclesUsed = sum(v in Vehicles)(isUsed[v]) * VehicleWeigth; % sum the number of vehicles used multiply vehicle weigth used to balance the optimal solution
-var int: obj = TotalDistance + NumVehiclesUsed; % objective function is equal to the sum between the total distance and number of vehicles used
+     
+% Precedence constraint
+constraint forall(i,j in Visits) (succ[i] = j -> prec[j] = i);       
 
 % Vehicle constraint
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
@@ -113,7 +106,13 @@ constraint lex_lesseq(succ,prec);
 
 % Vehicle usage symmetry
 
-constraint symmetry_breaking_constraint(forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0));
+constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
+
+
+% -------- Objective Function --------
+var int: TotalDistance = sum(v in Visits)(Distance[v, succ[v]]); % sum of the distances traveled 
+var int: NumVehiclesUsed = sum(v in Vehicles)(isUsed[v]); % sum the number of vehicles used multiply vehicle weigth used to balance the optimal solution
+var int: objective = TotalDistance + NumVehiclesUsed * VehicleWeigth; % objective function is equal to the sum between the total distance and number of vehicles used
 
 
 % -------- Search --------
@@ -127,9 +126,9 @@ solve
 %       :: seq_search([ int_search([succ[j] | j in Visits], dom_w_deg, indomain_random, complete) :: relax_and_reconstruct(succ,85),
 %                       int_search(vehicle, first_fail, indomain_split, complete),
 %                       int_search(prec, first_fail, indomain_random, complete) :: relax_and_reconstruct(prec,85)])
-       minimize obj;
+       minimize objective;
 %      satisfy;
-output["obj=\(obj)\n"];
+output["obj=\(objective)\nNumberVehiclesUsed=\(NumVehiclesUsed)\nTotalDistance=\(TotalDistance)m -> \(TotalDistance div 1000)km\n"];
 
 
 

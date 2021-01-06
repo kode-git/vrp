@@ -59,12 +59,16 @@ constraint forall(i in Customers, j in StartVisits union EndVisits )(
 % -------- Decisions Variables --------
 array[Visits] of var Vehicles: vehicle; % if vehicle[i] = j then the vehicle j visited i
 array[Visits] of var Visits: succ; % if succ[i] = j then j is the successor of i
-array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (dual) 
+% array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (dual) 
 array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for each vehicle i isUsed[i] = 0 if not used or isUsed[i] = 1 if used
 
 % -------- Main Constraints --------
 % Hamiltonian constraint
 constraint circuit(succ) :: domain;
+
+% implied constraints
+constraint alldifferent(succ) :: domain;
+
 
 % Capacity constraint 
 constraint forall(j in Vehicles) 
@@ -91,18 +95,12 @@ constraint succ[NumCustomers + (2 * NumVehicles)] = NumCustomers + 1;
 % Mantain consistency in the subpath of a vehicle
 constraint forall (c in Customers)
             (vehicle[succ[c]] = vehicle[c]);
-     
-% Precedence constraint
-constraint forall(i,j in Visits) (succ[i] = j -> prec[j] = i);       
+         
 
 % Vehicle constraint
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
 % ------- Symmetry breaking constraints -----------
-
-% Routes symmetry 
-
-constraint lex_lesseq(succ,prec);
 
 % Vehicle usage symmetry
 

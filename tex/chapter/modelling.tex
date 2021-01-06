@@ -64,7 +64,6 @@ Linking and consistency constraints are as follow:
     \item \begin{math}s_{s_{i}} = s_{i} - V + 1, \forall i \in \{N + V + 1,...N + (V * 2) - 1\} \end{math}
     \item \begin{math}s_{N + 2 * V} = N + 1\end{math}
     \item \begin{math}ve_{s_{j}} = ve_{j}, \forall j \in \{1,..., N\}\end{math}
-    \item \begin{math}s_{i} = j \Rightarrow p_{j} = i, \forall i,j in \{1,...,N + V * 2\}\end{math}
     \item \begin{math}u_{ve_{i}} = 1, \forall i \in \{1,...,N\}\end{math}
 \end{enumerate}
 \subsection{Additional Constraints}
@@ -72,7 +71,7 @@ VRP additional constraints are used to increase the optimal solution with the re
 
 \begin{enumerate}
  \setcounter{enumi}{9}
-    \item \begin{math}lex([s_{1},...,s_{NumVisits}],[p_{1},...,p_{NumVisits}])\end{math} breaks some routes symmetry when, for each vehicles, the route starts from the last customers visited by a vehicle and goes back to the first one with the same total distance of the respectively symmetrical route.
+    \item \begin{math}alldifferent([s_{1},...,s_[NumVisits])\end{math} defines an implied constraint to limit the assignments at cases where \begin{math}s_{i} \neq s_{j}, \forall i,j \in \{1,...,NumVisits\}\end{math} and reduce the search space without changing the set of solutions.
     \item \begin{math}u_{j} > 0 \Rightarrow u_{i} > 0, \forall i,j \in \{1,...,V\} : c_{i} = c_{j}, i < j\end{math} breaks symmetry of vehicles with same capacity compared to their own routes.
 \end{enumerate}
 \newpage

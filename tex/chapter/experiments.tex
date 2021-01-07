@@ -1,7 +1,34 @@
 \chapter{Experimental Study}
 \section{Experimental Setup}
 \subsection{Software and Hardware}
+The model was implied using a constraint programming language: MiniZinc 2.5.3. The solver associated is Gecode 6.3.0. Experiments were done on a Macbook Pro 2018 with processor at 2,2 GHz, 6-Core on a Intel Core i7 of 9th generation and a memory of 16 GB, 2400 Mhz DDR4.
 \subsection{Instances}
+The following table represents instances with their features referred to the number of customers, the number of vehicles, the total capacity available to satisfy customers demands and the total customers demands. Total capacity and total demands are distributed unevenly between customers and vehicles respectively.
+\begin{table}[!h]
+\label{T:instances}
+\begin{center}
+\begin{tabular}{| c | c | c | c | c | }
+\hline
+\textbf{Instance Name} & \multicolumn{4}{ c |}{\textbf{Features}}  \\ 
+\cline{2-5}
+& \textbf{\#Customers} & \textbf{\#Vehicles} & \textbf{Tot. Capacity} & \textbf{Tot. Demand}  \\
+\hline
+PR01 & 47 &  4  &  800 & 647 \\ \hline
+PR02 & 95 & 20  & 3,900 & 1,210\\ \hline
+PR03 & 143 &  20 & 3,800 & 1,765\\ \hline
+PR04 & 191 & 20  & 3,700 & 2,472\\ \hline
+PR05 & 239 & 20 & 3,600 & 3,335\\ \hline
+PR06 & 287 & 20 & 3,700 & 3,665\\ \hline
+PR07 & 71 & 20  & 4,000 & 928\\ \hline
+PR08 & 143 & 20 & 3,800 & 1,985\\ \hline
+PR09 & 215 & 20 & 3,600 & 2,735\\ \hline
+PR10 & 287 & 20 & 3,900 & 3,825\\ \hline
+PR11 & 47 & 20 & 4,000 & 647\\ \hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
 \subsection{Search Strategy}
 \section{Experimental Results}
 \subsection{Tables of Results}

@@ -19,7 +19,7 @@ From the initial set of input data and observations taken from the problem, it's
         \item\begin{math}\forall i \in \{1,...,N\}, j \in \{N + 1,...,  N + V * 2\}:\newline d_{ij} = \sqrt{(locX_{N+1} - locX_{i})^2 + (locY_{N+1} - locY_{i})^2} * 1000\end{math}
         \item \begin{math}\forall i,j \in \{N + 1,...,  N + V * 2\}: d_{i,j} = 0\end{math}
     \end{enumerate}
-    \item A weight of vehicle \begin{math}w\end{math} with integer domain represent the relevance of the minimizing the number of vehicles respects the minimal distance traveled during the optimal research. 
+    \item A weight of vehicle \begin{math}w\end{math} with integer domain represent the relevance of the minimizing the number of vehicles compared to the minimal distance traveled during the optimal research. 
 \end{enumerate}
 \section{Decision Variables}
 A solution of the problem is made up of routes, one route for vehicles. It is a sequence of nodes (visits) formed by customers nodes (visited in the route) and 2 depot visits (one start and one end node).
@@ -35,7 +35,6 @@ Starting from these observations, the model has the following decision variables
 \begin{enumerate}
     \item list of vehicles assignments \begin{math}ve = [ve_{1}, ..., ve_{NumVisits}] \end{math} with domains \begin{math}\{1,...,V\}\end{math}where for each \begin{math}i \in \{1,..., NumVisits\}, j \in {1,...,V} ,\end{math}if \begin{math} ve_{i} = j\end{math} then the node i is visited by the vehicle j
     \item list of successions \begin{math}s=[s_{1},...,s_{NumVisits}]\end{math} in the combined route with domains \begin{math}\{1,..., NumVisits\}\end{math} where for each \begin{math}i,j \in \{1,..., NumVisits\}\end{math} if \begin{math}succ[i] = j\end{math} then the successor of node i is j
-    \item list of precessors \begin{math}p=[p_{1},...,p_{NumVisits}]\end{math} in the combined route with domains \begin{math}\{1,..., NumVisits\}\end{math} where for each \begin{math}i,j \in \{1,..., NumVisits\}\end{math} if \begin{math}p[i] = j\end{math} then the precessor of node i is j
     \item list of values \begin{math}u=[u_{1},.., u_{V}]\end{math} with domain \begin{math}\{0,1\}\end{math} where for each \begin{math}i \in \{1,...,V\}\end{math} if \begin{math}u_{i} = 1 \end{math} then the vehicle visits at least one customer node, \begin{math} u_{i} = 0\end{math} otherwise
 \end{enumerate}
 \newpage
@@ -67,10 +66,10 @@ Linking and consistency constraints are as follow:
     \item \begin{math}u_{ve_{i}} = 1, \forall i \in \{1,...,N\}\end{math}
 \end{enumerate}
 \subsection{Additional Constraints}
-VRP additional constraints are used to increase the optimal solution with the reduction of the search space using symmetry breaking constraints.
+VRP additional constraints are used to increase the optimal solution with the reduction of the search space using symmetry breaking constraints or implied constraints.
 
 \begin{enumerate}
- \setcounter{enumi}{9}
+ \setcounter{enumi}{8}
     \item \begin{math}alldifferent([s_{1},...,s_[NumVisits])\end{math} defines an implied constraint to limit the assignments at cases where \begin{math}s_{i} \neq s_{j}, \forall i,j \in \{1,...,NumVisits\}\end{math} and reduce the search space without changing the set of solutions.
     \item \begin{math}u_{j} > 0 \Rightarrow u_{i} > 0, \forall i,j \in \{1,...,V\} : c_{i} = c_{j}, i < j\end{math} breaks symmetry of vehicles with same capacity compared to their own routes.
 \end{enumerate}

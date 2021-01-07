@@ -115,8 +115,8 @@ var int: objective = TotalDistance + NumVehiclesUsed * VehicleWeigth; % objectiv
 
 % -------- Search --------
 solve 
-     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
-%      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
+%     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
+      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
 %      :: int_default_search(smallest, indomain_random) :: restart_luby(250);
 %      :: int_default_search(dom_w_deg, indomain_min) :: restart_luby(400);
 %      :: int_default_search(dom_w_deg, indomain_random) :: restart_luby(250) 
@@ -126,7 +126,9 @@ solve
 %                       int_search(prec, first_fail, indomain_random, complete) :: relax_and_reconstruct(prec,85)])
        minimize objective;
 %      satisfy;
-output["obj=\(objective)\nNumberVehiclesUsed=\(NumVehiclesUsed)\nTotalDistance=\(TotalDistance)m -> \(TotalDistance div 1000)km\n"];
+
+
+output["Objective = \(objective)\nNumberVehiclesUsed = \(NumVehiclesUsed)\nTotalDistance = \(TotalDistance)m -> \(TotalDistance div 1000)km\n"];
 
 
 

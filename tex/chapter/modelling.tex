@@ -8,7 +8,7 @@ Let N the number of customers, input data are as follow:
     \item V is the number of vehicles available
     \item a list \begin{math}[c_{1},..., c_{V}]\end{math} with \begin{math} c_{i}, i \in \{1..V\}]\end{math} the capacity of the vehicle i
 \end{enumerate}
-To solve the problem, each location need to be visited. Therefore, it's important to take trace of visits in the routes of a solution. Each node is represent a visit checked by only one vehicle. 
+To solve the problem, each location need to be visited. Therefore, it's important to take trace of visits in the routes of a solution. Each node represents a visit checked by only one vehicle. 
 From the initial set of input data and observations taken from the problem, it's necessary to define following processing data, useful to establish constraints in the model or clarify some types of values:
 \begin{enumerate}
  \setcounter{enumi}{5}
@@ -27,7 +27,7 @@ A solution of the problem is made up of routes, one route for vehicles. It is a 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{images/combined-route-solution.png}
-    \caption{A solution of VRP with 5 customers and 2 vehicles with 2 routes. Nodes 6,7 are start visits nodes 9,8 are end visits and represents the same location: the depot}
+    \caption{A solution of VRP with 5 customers and 2 vehicles with 2 routes. Nodes \{6,7\} are start visits nodes and \{9,8\}are end visits.}
     \label{fig:mesh1}
 \end{figure}
 
@@ -51,27 +51,28 @@ Using Knapsack Problem definition, we can add these following constraints for th
 
 \begin{enumerate}
  \setcounter{enumi}{1}
-    \item \begin{math} \sum_{i \in \{1,..,N\} : ve_{i} = v}de_{i} \leq c_{v}, \forall v \in \{1,..., V\}\end{math}
+    \item \begin{math} \forall v \in \{1,..., V\}, \:\sum_{i \in \{1,..,N\} : ve_{i} = v}de_{i} \leq c_{v}, \end{math}
 \end{enumerate}
 
 To maintain consistency with the problem definition, are defined a series of constraints to start and end every vehicles routes at the depot and linking constraints to manage the start and end nodes.\newline
 Linking and consistency constraints are as follow:
 \begin{enumerate}
  \setcounter{enumi}{2}
-    \item \begin{math} ve_{s} = s - N,  \forall s \in \{N+1, ..., N + V\}\end{math}
-    \item \begin{math}ve_{e} = e - N - V, \forall e \in \{N + V + 1, ..., N + V * 2\}\end{math}
-    \item \begin{math}s_{s_{i}} = s_{i} - V + 1, \forall i \in \{N + V + 1,...N + (V * 2) - 1\} \end{math}
+    \item \begin{math}\forall s \in \{N+1, ..., N + V\},\: ve_{s} = s - N\end{math}
+    \item \begin{math}\forall e \in \{N + V + 1, ..., N + V * 2\}, \:ve_{e} = e - N - V\end{math}
+    \item \begin{math}\forall i \in \{N + V + 1,...N + (V * 2) - 1\}, \:s_{s_{i}} = s_{i} - V + 1 \end{math}
     \item \begin{math}s_{N + 2 * V} = N + 1\end{math}
-    \item \begin{math}ve_{s_{j}} = ve_{j}, \forall j \in \{1,..., N\}\end{math}
-    \item \begin{math}u_{ve_{i}} = 1, \forall i \in \{1,...,N\}\end{math}
+    \item \begin{math}\forall j \in \{1,..., N\}, \:ve_{s_{j}} = ve_{j}\end{math}
+    \item \begin{math}\forall i \in \{1,...,N\},\:u_{ve_{i}} = 1 \end{math}
 \end{enumerate}
 \subsection{Additional Constraints}
 VRP additional constraints are used to increase the optimal solution with the reduction of the search space using symmetry breaking constraints or implied constraints.
 
 \begin{enumerate}
  \setcounter{enumi}{8}
-    \item \begin{math}alldifferent([s_{1},...,s_[NumVisits])\end{math} defines an implied constraint to limit the assignments at cases where \begin{math}s_{i} \neq s_{j}, \forall i,j \in \{1,...,NumVisits\}\end{math} and reduce the search space without changing the set of solutions.
-    \item \begin{math}u_{j} > 0 \Rightarrow u_{i} > 0, \forall i,j \in \{1,...,V\} : c_{i} = c_{j}, i < j\end{math} breaks symmetry of vehicles with same capacity compared to their own routes.
+    \item \begin{math}alldifferent([s_{1},...,s_{NumVisits})\end{math} successor implied constraint
+    \item \begin{math}\forall i \in \{C + 1,...,NumVisits - 1\}, \: s_{i} < s_{i+1}\end{math} breaks starting depot symmetry
+    \item \begin{math}\forall i,j \in \{1,...,V\} \: \land c_{i} = c_{j} \land i < j,\: u_{j} > 0 \Rightarrow u_{i} > 0\end{math} breaks same-capacity vehicles symmetry
 \end{enumerate}
 \newpage
 \section{Objective Function}

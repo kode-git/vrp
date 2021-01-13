@@ -59,7 +59,6 @@ constraint forall(i in Customers, j in StartVisits union EndVisits )(
 % -------- Decisions Variables --------
 array[Visits] of var Vehicles: vehicle; % if vehicle[i] = j then the vehicle j visited i
 array[Visits] of var Visits: succ; % if succ[i] = j then j is the successor of i
-% array[Visits] of var Visits: prec; % if prec[i] = j then j is the precessor of i (dual) 
 array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for each vehicle i isUsed[i] = 0 if not used or isUsed[i] = 1 if used
 
 % -------- Main Constraints --------
@@ -75,7 +74,7 @@ constraint forall(j in Vehicles)
                     (sum(i in Customers where vehicle[i] = j)(Demand[i]) <= Capacity[j]);
 
 
-% Setting the know decisions
+% ---- Setting the know decisions -----
 
 % Start visits vehicles
 constraint forall(s in StartVisits)(
@@ -100,10 +99,10 @@ constraint forall (c in Customers)
 % Vehicle constraint
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
-% ------- Symmetry breaking constraints -----------
+% Depot symmetry 
+constraint forall(i in NumCustomers + 1..NumCustomers + NumVehicles  - 1)(succ[i] < succ[i+1]);
 
 % Vehicle usage symmetry
-
 constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
 
 
@@ -115,17 +114,8 @@ var int: objective = TotalDistance + NumVehiclesUsed * VehicleWeigth; % objectiv
 
 % -------- Search --------
 solve 
-%     :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
-      :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(250) :: relax_and_reconstruct(succ,85)
-%      :: int_default_search(smallest, indomain_random) :: restart_luby(250);
-%      :: int_default_search(dom_w_deg, indomain_min) :: restart_luby(400);
-%      :: int_default_search(dom_w_deg, indomain_random) :: restart_luby(250) 
-%      :: int_default_search(dom_w_deg, indomain_random) minimize obj; 
-%       :: seq_search([ int_search([succ[j] | j in Visits], dom_w_deg, indomain_random, complete) :: relax_and_reconstruct(succ,85),
-%                       int_search(vehicle, first_fail, indomain_split, complete),
-%                       int_search(prec, first_fail, indomain_random, complete) :: relax_and_reconstruct(prec,85)])
+    :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
        minimize objective;
-%      satisfy;
 
 
 output["Objective = \(objective)\nNumberVehiclesUsed = \(NumVehiclesUsed)\nTotalDistance = \(TotalDistance)m -> \(TotalDistance div 1000)km\n"];

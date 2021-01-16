@@ -76,18 +76,18 @@ VRP additional constraints are used to increase the optimal solution with the re
 \end{enumerate}
 \newpage
 \section{Objective Function}
-Let \begin{math}w\end{math} the weight of vehicles and let \begin{math} td\end{math} and \begin{math}tu\end{math} respectively the total distance traveled by vehicles and the nunber of vehicles used defined as follow: 
+Let \begin{math}w\end{math} the weight of vehicles and let \begin{math} td\end{math} and \begin{math}vu\end{math} respectively the total distance traveled by vehicles and the number of vehicles used defined as follow: 
 \begin{itemize}
     \item \begin{math}td = \sum_{v \in \{1,...,NumVisits\}}d_{v, s_{v}}\end{math}
-    \item \begin{math}tu = \sum_{v \in \{1,...,V\}}u_{v}\end{math}
+    \item \begin{math}vu = \sum_{v \in \{1,...,V\}}u_{v}\end{math}
 \end{itemize}
 The objective function is:
 \begin{center}
-    \begin{math}f(td,tu) = td + (tu * w)\end{math}
+    \begin{math}f(td,vu) = td + (vu * w)\end{math}
 \end{center}
 The objective of the problem is:
 \begin{center}
-    \begin{math}min(f(td,tu))\end{math}
+    \begin{math}min(f(td,vu))\end{math}
 \end{center}
 The value of w is the balance value of the reduction of vehicles number compared to the reduction of the total distance. More the value of \begin{math}w\end{math} is huge and more the objective function tends to optimize the minimum values of vehicles then the total distances.
 

@@ -9,10 +9,11 @@ The following table represents instances with their features referred to the num
 \begin{center}
 \begin{tabular}{| c | c | c | c | c | }
 \hline
-\textbf{Instance Name} & \multicolumn{4}{ c |}{\textbf{Features}}  \\ 
+\textbf{Instance} & \multicolumn{4}{ c |}{\textbf{Features}}  \\ 
 \cline{2-5}
 & \textbf{\#Customers} & \textbf{\#Vehicles} & \textbf{Tot. Capacity} & \textbf{Tot. Demand}  \\
 \hline
+% Table values
 PR01 & 47 &  4  &  800 & 647 \\ \hline
 PR02 & 95 & 20  & 3,900 & 1,210\\ \hline
 PR03 & 143 &  20 & 3,800 & 1,765\\ \hline
@@ -23,22 +24,90 @@ PR07 & 71 & 20  & 4,000 & 928\\ \hline
 PR08 & 143 & 20 & 3,800 & 1,985\\ \hline
 PR09 & 215 & 20 & 3,600 & 2,735\\ \hline
 PR10 & 287 & 20 & 3,900 & 3,825\\ \hline
-PR11 & 47 & 20 & 4,000 & 647\\ \hline
+PR11 & 47 & 20 & 4,000 & 647\\ \hline \hline
 
 \end{tabular}
 \end{center}
 \end{table}
 \newpage
 \subsection{Search Strategy}
-We used the following search strategies:
+The following list represent the search strategy associated with their acronyms carried out on the model in Minizinc with Gecode solver:
 \begin{enumerate}
-    \item \textbf{LUDR}: identify the integer search undertakes the list of succession \begin{math}s\end{math} choosing domWdeg + random value heuristics in addition to the luby strategy (L = 250)
-    \item \textbf{ILLNS}: identify the LUDR heuristics in addition to the LNS fixing 85\% of the \begin{math}s\end{math}variables.
-    \item \begin{math}\end{math}
-    \item \textbf{SLLNS}: identify the sequential search, first undertakes the list of vehicles assignments \begin{math} ve \end{math} choosing smallest + minimum value heuristics, then undertakes the list of succession \begin{math} s\end{math} choosing using domWdeg + random value heuristics in addition to the luby strategy (L = 300) and LNS fixing 85\% of the \begin{math} s\end{math} variables.
+    \item \textbf{SEQDR}: identify the sequential search structured in the following ordered sequence:
+    \begin{enumerate}
+        \item Take a decision for each element of the vehicles list \begin{math} ve \end{math} using domWdeg and random value heuristics
+        \item Take a decision for each element of successors list \begin{math} s \end{math} using domWdeg and random value heuristics
+    \end{enumerate} with the Luby Strategy on L = 250
+    \item \textbf{SEQSM}: identify the sequential search structured in the following ordered sequence:
+    \begin{enumerate}
+        \item Take a decision for each element of the vehicles list \begin{math} ve \end{math} using smallest domain and minimum value heuristics
+        \item Take a decision for each element of the successors list \begin{math} s \end{math} using domWdeg and random value heuristics
+        \end{enumerate} with the Luby Strategy on L = 300.
+    \item \textbf{DRLSN}: identify the search structured with domWdeg and random domain heuristic on \begin{math} s \end{math} variables list using Luby Strategy with L = 350 and the Large Neighbourhood Strategy fixing 85\% of the \begin{math}s\end{math} variables list.
+    \item \textbf{SMLNS}: identify the SEQ heuristics using Large Neighbourhood Strategy fixing 85\% of the \begin{math} s \end{math} variables list.
     
     
 \end{enumerate}
+\newpage
 \section{Experimental Results}
 \subsection{Tables of Results}
+\begin{itemize}
+    \item Table of Failures
+    
+        \begin{table}[!h]
+    \label{T:instances}
+        \begin{center}
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c | }
+\hline
+
+\textbf{Instance} & \textbf{SEQDR} & \textbf{SEQSM} & \textbf{DRLNS} & \textbf{SMLNS}  \\
+\hline
+% Failures table
+PR01 & 1,617,823  & 1,846,879 &  0 & 0  \\ \hline
+PR02 & 261,731  & 276,031  &  0 & 0  \\ \hline
+PR03 & 107,615  & 111,227 &  0 & 0 \\ \hline
+PR04 & 54,289  & 59,572 &  0 & 0  \\ \hline
+PR05 & 25,276  & 35,984 &  0 & 0  \\ \hline
+PR06 & 14,075  & 24,078 & 0 & 0 \\ \hline
+PR07 & 365,984  & 431,475 &  0 & 0  \\ \hline
+PR08 & 101,392  & 104,439 &  0 & 0  \\ \hline
+PR09 & 32,350  & 31,886 &  0 & 0  \\ \hline
+PR10 & 13,015  & 15,580  &  0 & 0  \\ \hline
+PR11 & 738,268  & 491,894 &  0 & 0  \\ \hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+    \item Table of Optimal Solutions
+        \begin{table}[!h]
+    \label{T:instances}
+        \begin{center}
+        \begin{tabular}{| c | c | c | c | c | c | c | c | c | }
+\hline
+
+\textbf{Instance} & \multicolumn{2}{ c |}{\textbf{SEQDR}} & \multicolumn{2}{ c |}{\textbf{SEQSM}} & \multicolumn{2}{ c |}{\textbf{DRLNS}} & \multicolumn{2}{ c |}{\textbf{SMLNS}}   \\
+\cline{2-3}  \cline{4-5} \cline{6-7} \cline{8-9}
+& \textbf{Dist.} & \textbf{Vehicl.} & \textbf{Dist.} &\textbf{Vehicl.} & \textbf{Dist.} & \textbf{Vehicl.} & \textbf{Dist.} & \textbf{Vehicl.}  \\
+\hline
+% Table values
+PR01 & 2,395,540  & \textbf{4} &  2,300,229 & \textbf{4} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR02 & 5,759,370  & \textbf{20} &  5,171,574 & \textbf{7} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR03 & 1,1090,848  & \textbf{20} &  10,433,132 & \textbf{10} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR04 & 12,834,190  & \textbf{20} &  12,666,579 & \textbf{14} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR05 & 13,939,739  & \textbf{20} & 13,457,287 & \textbf{19} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR06 & 18,746,215  & \textbf{20} &  19,188,412 & \textbf{20} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR07 & 5,040,291  & \textbf{20} &  4,238,722 & \textbf{5} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR08 & 10,159,608  & \textbf{20} &  9,736,174 & \textbf{11} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR09 & 15,267,652  & \textbf{20} &  15,056,711 & \textbf{16} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR10 & 19,773,277  & \textbf{20} & 19,778,614  & \textbf{20} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR11 & 3,171,559  & \textbf{18} &  2,413,564 & \textbf{4} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+\newline
+In the table have reported the number of the total distance traveled on the combined route \begin{math} Dist. \equiv td\end{math} and the number of vehicles used \begin{math}Vehicl. \equiv vu\end{math}. The objective value \begin{math} min(f(td,vu)) \end{math} have been calculated using the objective function, \begin{math} tu \end{math} and \begin{math} vu \end{math} defined in the paragraph 2.4. and \begin{math} w = 1000 \end{math}.
+\end{itemize}
+\newpage
 \subsection{Graphical Representation}

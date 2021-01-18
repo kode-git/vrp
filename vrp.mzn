@@ -10,7 +10,7 @@ string: Name;
 
 % Vehicles
 int: NumVehicles;
-int: VehicleWeigth = 1000;
+int: VehicleWeigth = 100000;
 set of int: Vehicles = 1..NumVehicles;
 
 % Customers
@@ -64,10 +64,8 @@ array[Vehicles] of var 0..1: isUsed; % define if a vehicle is used or not, for e
 % -------- Main Constraints --------
 % Hamiltonian constraint
 constraint circuit(succ) :: domain;
-
 % implied constraints
 constraint alldifferent(succ) :: domain;
-
 
 % Capacity constraint 
 constraint forall(j in Vehicles) 
@@ -99,10 +97,7 @@ constraint forall (c in Customers)
 % Vehicle constraint
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
-% Depot symmetry 
-constraint forall(i in NumCustomers + 1..NumCustomers + NumVehicles  - 1)(succ[i] < succ[i+1]);
-
-% Vehicle usage symmetry
+% Vehicles capacities symmetry breaking
 constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
 
 
@@ -114,7 +109,10 @@ var int: objective = TotalDistance + NumVehiclesUsed * VehicleWeigth; % objectiv
 
 % -------- Search --------
 solve 
-    :: seq_search([int_search(vehicle, smallest, indomain, complete), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300) :: relax_and_reconstruct(succ,85)
+% :: seq_search([int_search(vehicle, dom_w_deg, indomain_random, complete),int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(250)
+   :: seq_search([int_search(vehicle, smallest, indomain_min), int_search(succ, dom_w_deg, indomain_random)]) :: restart_luby(300)
+%  :: int_search(succ, dom_w_deg, indomain_random) :: restart_luby(350)
+            :: relax_and_reconstruct(succ,85)
        minimize objective;
 
 

@@ -63,17 +63,17 @@ The following list represent the search strategy associated with their acronyms 
 \textbf{Instance} & \textbf{SEQDR} & \textbf{SEQSM} & \textbf{DRLNS} & \textbf{SMLNS}  \\
 \hline
 % Failures table
-PR01 & 1,617,823  & 1,846,879 &  0 & 0  \\ \hline
-PR02 & 261,731  & 276,031  &  0 & 0  \\ \hline
-PR03 & 107,615  & 111,227 &  0 & 0 \\ \hline
-PR04 & 54,289  & 59,572 &  0 & 0  \\ \hline
-PR05 & 25,276  & 35,984 &  0 & 0  \\ \hline
-PR06 & 14,075  & 24,078 & 0 & 0 \\ \hline
-PR07 & 365,984  & 431,475 &  0 & 0  \\ \hline
-PR08 & 101,392  & 104,439 &  0 & 0  \\ \hline
-PR09 & 32,350  & 31,886 &  0 & 0  \\ \hline
-PR10 & 13,015  & 15,580  &  0 & 0  \\ \hline
-PR11 & 738,268  & 491,894 &  0 & 0  \\ \hline
+PR01 & 1,617,823  & 1,846,879 &  1,758,637 & 1,790,778\\ \hline
+PR02 & 261,731  & 276,031  &  304,075 & 307,405  \\ \hline
+PR03 & 107,615  & 111,227 &  108,265 & 153,923 \\ \hline
+PR04 & 54,289  & 59,572 &  53,443 & 86,818  \\ \hline
+PR05 & 25,276  & 35,984 &  30,839 & 52,607  \\ \hline
+PR06 & 14,075  & 24,078 & 15,912 & 0 \\ \hline
+PR07 & 365,984  & 431,475 &  397,412 & 523,065  \\ \hline
+PR08 & 101,392  & 104,439 &  107,554 & 0  \\ \hline
+PR09 & 32,350  & 31,886 &  33,942 & 0  \\ \hline
+PR10 & 13,015  & 15,580  &  14,493 & 0  \\ \hline
+PR11 & 738,268  & 491,894 &  650,122 & 723,032  \\ \hline
 \hline
 \end{tabular}
 \end{center}
@@ -88,26 +88,27 @@ PR11 & 738,268  & 491,894 &  0 & 0  \\ \hline
 
 \textbf{Instance} & \multicolumn{2}{ c |}{\textbf{SEQDR}} & \multicolumn{2}{ c |}{\textbf{SEQSM}} & \multicolumn{2}{ c |}{\textbf{DRLNS}} & \multicolumn{2}{ c |}{\textbf{SMLNS}}   \\
 \cline{2-3}  \cline{4-5} \cline{6-7} \cline{8-9}
-& \textbf{Dist.} & \textbf{Vehicl.} & \textbf{Dist.} &\textbf{Vehicl.} & \textbf{Dist.} & \textbf{Vehicl.} & \textbf{Dist.} & \textbf{Vehicl.}  \\
+& \textbf{Dist.} & \textbf{Veh.} & \textbf{Dist.} &\textbf{Veh.} & \textbf{Dist.} & \textbf{Veh.} & \textbf{Dist.} & \textbf{Veh.}  \\
 \hline
 % Table values
-PR01 & 2,395,540  & \textbf{4} &  2,300,229 & \textbf{4} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR02 & 5,759,370  & \textbf{20} &  5,171,574 & \textbf{7} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR03 & 1,1090,848  & \textbf{20} &  10,433,132 & \textbf{10} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR04 & 12,834,190  & \textbf{20} &  12,666,579 & \textbf{14} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR05 & 13,939,739  & \textbf{20} & 13,457,287 & \textbf{19} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR06 & 18,746,215  & \textbf{20} &  19,188,412 & \textbf{20} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR07 & 5,040,291  & \textbf{20} &  4,238,722 & \textbf{5} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR08 & 10,159,608  & \textbf{20} &  9,736,174 & \textbf{11} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR09 & 15,267,652  & \textbf{20} &  15,056,711 & \textbf{16} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR10 & 19,773,277  & \textbf{20} & 19,778,614  & \textbf{20} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
-PR11 & 3,171,559  & \textbf{18} &  2,413,564 & \textbf{4} & 0 & \textbf{0} & 0  & \textbf{0}  \\ \hline
+PR01 & 2,395,540  & \textbf{4} &  2,300,229 & \textbf{4} & 940,728 & \textbf{3} & 959,341  & \textbf{3}  \\ \hline
+PR02 & 5,759,370  & \textbf{20} &  5,171,574 & \textbf{7} & 2,481,414 & \textbf{9} & 2,280,093  & \textbf{9}  \\ \hline
+PR03 & 1,1090,848  & \textbf{20} &  10,433,132 & \textbf{10} & - & \textbf{-} & 6,768,854  & \textbf{10}  \\ \hline
+PR04 & 12,834,190  & \textbf{20} &  12,666,579 & \textbf{14} & - & \textbf{-} & 8,538,335  & \textbf{14}  \\ \hline
+PR05 & 13,939,739  & \textbf{20} & 13,457,287 & \textbf{19} & - & \textbf{-} & 9,538,436  & \textbf{19}  \\ \hline
+PR06 & 18,746,215  & \textbf{20} &  19,188,412 & \textbf{20} & - & \textbf{-} & 0  & \textbf{0}  \\ \hline
+PR07 & 5,040,291  & \textbf{20} &  4,238,722 & \textbf{5} & 1,227,767 & \textbf{7} & 1,265,506  & \textbf{4}  \\ \hline
+PR08 & 10,159,608  & \textbf{20} &  9,736,174 & \textbf{11} & - & \textbf{-} & 0  & \textbf{0}  \\ \hline
+PR09 & 15,267,652  & \textbf{20} &  15,056,711 & \textbf{16} & - & \textbf{-} & 0  & \textbf{0}  \\ \hline
+PR10 & 19,773,277  & \textbf{20} & 19,778,614  & \textbf{20} & - & \textbf{-} & 0  & \textbf{0}  \\ \hline
+PR11 & 3,171,559  & \textbf{18} &  2,413,564 & \textbf{4} & 920,830 & \textbf{3} & 913,719  & \textbf{3}  \\ \hline
 \hline
 \end{tabular}
 \end{center}
 \end{table}
 \newline
-In the table have reported the number of the total distance traveled on the combined route \begin{math} Dist. \equiv td\end{math} and the number of vehicles used \begin{math}Vehicl. \equiv vu\end{math}. The objective value \begin{math} min(f(td,vu)) \end{math} have been calculated using the objective function, \begin{math} tu \end{math} and \begin{math} vu \end{math} defined in the paragraph 2.4. and \begin{math} w = 1000 \end{math}.
+The previous table have reported the number of the total distance traveled on the combined route (\begin{math} 
+Dist. \equiv td\end{math}) and the number of vehicles used (\begin{math}Veh. \equiv vu\end{math}). The objective value \begin{math} min(f(td,vu)) \end{math} have been calculated using the objective function, \begin{math} tu \end{math} and \begin{math} vu \end{math} defined in the paragraph 2.4. and \begin{math} w = 1000 \end{math}.
 \end{itemize}
 \newpage
 \subsection{Graphical Representation}

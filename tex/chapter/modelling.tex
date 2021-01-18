@@ -71,7 +71,6 @@ VRP additional constraints are used to increase the optimal solution with the re
 \begin{enumerate}
  \setcounter{enumi}{8}
     \item \begin{math}alldifferent([s_{1},...,s_{NumVisits})\end{math} successor implied constraint
-    \item \begin{math}\forall i \in \{C + 1,...,NumVisits - 1\}, \: s_{i} < s_{i+1}\end{math} breaks starting depot symmetry
     \item \begin{math}\forall i,j \in \{1,...,V\} \: \land c_{i} = c_{j} \land i < j,\: u_{j} > 0 \Rightarrow u_{i} > 0\end{math} breaks same-capacity vehicles symmetry
 \end{enumerate}
 \newpage

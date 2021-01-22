@@ -16,13 +16,15 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
 \usetikzlibrary{fit, positioning}
 \usepackage{lipsum}
 \usepackage{hyperref}
-\bibliographystyle{ieeetr}
-\usepackage{biblatex}
-\addbibresource{references.bib}
-
+\usepackage[english]{babel}
+\addto{\captionsenglish}{%
+  \renewcommand{\bibname}{References}
+}
 
 \begin{document}
 
@@ -36,38 +38,20 @@
 \input{chapter/experiments}
 \input{chapter/conclusions}
 
-\begin{thebibliography}{9}
 
-\bibitem{travelling-salesman-problem} 
-Travelling Salesman Problem Definition,
-\\\texttt{https://en.wikipedia.org/wiki/Travelling\_salesman\_problem}
+\begin{thebibliography}{9}{}
 
+\bibitem{vehicle-routing-definition}
+Bruno De Backer, Vincent Furnon, Paul Shaw, Philip Kilby and Patrick Prosser
+\textit{Solving Vehicle Routing Problems Using Constraint Programming and Metaheuristics}.
+J. Heuristics, 2000.
 
-\bibitem{knapsack-problem}
-Knapsack Problem Definition
-\\\texttt{https://en.wikipedia.org/wiki/Knapsack\_problem}
+\bibitem{heuristics-vrp}
+Gilbert Laporte, Stefan Ropke, Thibaut Vidal
+\textit{Chapter 4: Heuristics for the Vehicle Routing Problem}
+In book Vehicle Routing (pg. 87-116), 2014 
 \end{thebibliography}
 
 \end{document}
 
-\begin{thebibliography}{9}
-\bibitem{latexcompanion} 
-Michel Goossens, Frank Mittelbach, and Alexander Samarin. 
-\textit{The \LaTeX\ Companion}. 
-Addison-Wesley, Reading, Massachusetts, 1993.
 
-\bibitem{einstein} 
-Albert Einstein. 
-\textit{Zur Elektrodynamik bewegter K{\"o}rper}. (German) 
-[\textit{On the electrodynamics of moving bodies}]. 
-Annalen der Physik, 322(10):891–921, 1905.
-
-\bibitem{travelling-sales-man-problem} 
-Travelling Salesman Problem Definition
-\\\texttt{https://en.wikipedia.org/wiki/Travelling\_salesman\_problem}
-
-\bibitem{knapsack-problem}
-Knapsack Problem Definition
-\\\texttt{https://en.wikipedia.org/wiki/Knapsack_problem}
-
-\end{thebibliography}

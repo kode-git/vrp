@@ -1,4 +1,4 @@
-# How to run model
+# How to run the VRP model
 
 ## Software & Versions
 - Minizinc 2.5.1

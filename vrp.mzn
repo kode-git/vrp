@@ -98,7 +98,7 @@ constraint forall (c in Customers)
 constraint forall(i in Customers)(isUsed[vehicle[i]] = 1);
 
 % Vehicles capacities symmetry breaking
-constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
+% constraint forall(i,j in 1..NumVehicles where Capacity[i] = Capacity[j] /\ i < j)(isUsed[j] > 0 -> isUsed[i] > 0);
 
 
 % -------- Objective Function --------

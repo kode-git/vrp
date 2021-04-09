@@ -12,4 +12,4 @@
 
 
 ## Author
-- Mario Sessa (@kodegit)
+- Mario Sessa (@kodeg-git)
